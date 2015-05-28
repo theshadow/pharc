@@ -1,0 +1,144 @@
+root:
+  _type: array
+  _children:
+    targets:
+      _description: "A collection of compile targets which allow you to specify different targets, for differen't OS's for example. Each target should have a unique name."
+      _type: prototype
+      _min_items: 1
+      _prototype: 
+        _type: partial
+        _partial: target
+partials:
+  preprocess:
+    _type: choice
+    _choices:
+      1:
+        _type: array
+        _children:
+          find:
+            _type: text
+            _description: "When the type is regex this is the regular expression which will be searched for in the file contents."
+            _required: true
+            _not_empty: true
+          replace:
+            _type: text
+            _description: "When the type is regex this is what the matched strings will be replaced with in the file contents."
+            _required: true
+      2:
+        _type: array
+        _children:
+          command:
+            _type: text
+            _description: "When the type is command this specifies a shell command to execute"
+            _required: true
+            _not_empty: true
+  file-set:
+    _type: array
+    _children:
+      path: 
+        _type: text
+        _description: "Defines a directory or path to include in the resulting phar file."
+        _required: true
+        _not_empty: true
+      name:
+        _type: text
+        _description: "Specifies a file matching pattern using asterisks as wild cards. e.g. *.php"
+        _not_empty: true
+      ignore-vcs:
+        _type: boolean
+        _description: "Defaults to true. When true this specifies that VCS files and directories should be ignored."
+      strip:
+        _type: boolean
+        _description: "Defaults to true. When true this specifies that the file contents will be stripped of whitespace before being added to the file."
+      exclude:
+        _type: prototype
+        _description: "A collection of files to be ignored. Should be just the basename of the file. Must have at least one item when defined."
+        _min_items: 1
+        _prototype:
+          _type: text
+          _not_empty: true
+      only-if-exists:
+        _type: boolean
+        _description: "Defaults to false. When true it will only attempt to include the specified file if it exists. When set to false and the file doesn't exist an error will be thrown."
+      preprocess:
+        _type: prototype
+        _description: "Defines a regular expression or command to preprocess a files contents before being added to the phar. An example would be stripping out '#! /usr/bin/env php' from the start of the file."
+        _prototype:
+          _type: partial
+          _partial: preprocess
+  target:
+    _type: array
+    _description: "A target is a compile configuration. You can have one or more of them specified. This is to allow you the ability to define a build for specific environments. Or even debug builds."
+    _children:
+      phar:
+        _type: text
+        _description: "The path and name of the resulting phar file."
+        _required: true
+        _not_empty: true
+      stub:
+        _type: choice
+        _description: "The stub is the entry point for your phar file. It's sort of like the 'main' function. Based on the type it will try to pull in the stub from either a specified string, the output of a shell command, or a file." 
+        _choices:
+          1:
+            _type: array
+            _children:
+              command: 
+                _type: text
+                _required: true
+                _not_empty: true
+          2:
+            _type: array
+            _children:
+              string: 
+                _type: text
+                _required: true
+                _not_empty: true
+          3:
+            _type: array
+            _children: 
+              file:
+                _type: text
+                _required: true
+                _not_empty: true
+      license:
+        _type: text
+        _description: "Full path to the license file to include in the phar."
+        _required: true
+        _not_empty: true
+      composer:
+        _type: array
+        _description: "Many projects utilize composer as a dependency manager. This section defines how to include your dependencies in the resulting phar."
+        _children:
+          config: 
+            _type: text
+            _description: "The full path to the composer.json file."
+            _required: true
+            _not_empty: true
+          include-dev:
+            _type: boolean
+            _description: "Defaults to false. When true dependencies defined in require-dev will also be added to the resulting phar file."
+          path:
+            _type: text
+            _description: "Defaults to 'vendor/'. The path may be defined if you wish to use a different vendor path than one defined in your composer.json in the config.vendor-dir"
+            _not_empty: true
+          exclude:
+            _type: prototype
+            _description: "A list of paths to exclude from inclusion."
+            _prototype:
+              _type: text
+              _not_empty: true
+            _min_items: 1
+          include:
+            _type: prototype
+            _description: "A list of paths to include from inclusion."
+            _prototype:
+              _type: text
+              _not_empty: true
+            _min_items: 1            
+      files:
+        _type: prototype
+        _description: "A collection of file set descriptors which define what file(s) to include in the resulting phar file."
+        _prototype:
+          _type: partial
+          _partial: file-set
+

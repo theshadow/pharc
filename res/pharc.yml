@@ -1,0 +1,16 @@
+targets:
+  default:
+    phar: builds/pharc.phar
+    signature-method: SHA1
+    include:
+      source:
+        path: src/
+      license:
+        path: LICENSE
+        spacer: \n
+
+    exclude:
+      - src/path/to/excluded-file.php
+      - src/path/to/excluded-dir
+    autoload:
+      - vendor/autoload.php
