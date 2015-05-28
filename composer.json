@@ -2,7 +2,7 @@
   "name": "theshadow/pharc",
   "description": "pharc is a tool which can compile your PHP project into a phar",
   "minimum-stability": "dev",
-  "homepage": "https://getcomposer.org/",
+  "homepage": "https://github.com/theshadow/pharc",
   "type": "library",
   "keywords": ["package", "phar", "compile"],
   "authors": [
