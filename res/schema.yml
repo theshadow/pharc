@@ -40,16 +40,19 @@ partials:
         _description: "Defines a directory or path to include in the resulting phar file."
         _required: true
         _not_empty: true
-      name:
-        _type: text
-        _description: "Specifies a file matching pattern using asterisks as wild cards. e.g. *.php"
-        _not_empty: true
       ignore-vcs:
         _type: boolean
         _description: "Defaults to true. When true this specifies that VCS files and directories should be ignored."
       strip:
         _type: boolean
         _description: "Defaults to true. When true this specifies that the file contents will be stripped of whitespace before being added to the file."
+      include:
+        _type: prototype
+        _description: "A collection of files to be included. Should be just the basename of the file. Wildcards are allowed. Must have at least one item when defined."
+        _min_items: 1
+        _prototype:
+          _type: text
+          _not_empty: true        
       exclude:
         _type: prototype
         _description: "A collection of files to be ignored. Should be just the basename of the file. Must have at least one item when defined."
@@ -73,6 +76,11 @@ partials:
       phar:
         _type: text
         _description: "The path and name of the resulting phar file."
+        _required: true
+        _not_empty: true
+      signature-method:
+        _type: text
+        _description: "The method to sign the resulting phar file with. The allowed options are SHA1, SHA256, and SHA512"
         _required: true
         _not_empty: true
       stub:
