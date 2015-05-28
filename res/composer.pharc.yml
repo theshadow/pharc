@@ -1,0 +1,42 @@
+targets:
+  default:
+    phar: builds/composer.phar
+    stub: 
+      command: php res/stub.php
+    license: ./LICENSE
+    signature-method: SHA1
+    composer:
+      config: composer.json
+      path: vendor/
+      include-dev: false
+      exclude:
+        - Tests
+        - test
+        - docs
+      include:
+        - "*.php"
+        - LICENSE
+    files:
+      project:
+        path: src/ # make optional! By default it's the working directory.
+        ignore-vcs: true # default true
+        strip: true # default true
+        include:
+          - "*.php"
+        exclude: # optional, min items: 1
+          - Compiler.php
+          - Classloader.php
+      class-loader:
+        path: src/Composer/Autoload/Classloader.php
+        strip: false # optional
+      hidden-input-exe:
+        path: vendor/seld/cli-prompt/res/hiddeninput.exe
+        strip: false
+      composer-bin:
+        path: bin/composer
+        preprocess:
+          remove-shell:
+            find: "{^#!/usr/bin/env php\s*}"
+            replace: ""
+
+
