@@ -3,7 +3,7 @@ targets:
     phar: builds/composer.phar
     stub: 
       command: php res/stub.php
-    license: ./LICENSE
+    license: LICENSE
     signature-method: SHA1
     composer:
       config: composer.json
@@ -27,13 +27,18 @@ targets:
           - Compiler.php
           - Classloader.php
       class-loader:
-        path: src/Composer/Autoload/Classloader.php
-        strip: false # optional
+        path: src/Composer/Autoload/
+        include: 
+          - Classloader.php
       hidden-input-exe:
-        path: vendor/seld/cli-prompt/res/hiddeninput.exe
+        path: vendor/seld/cli-prompt/res/
+        include: 
+          - hiddeninput.exe
         strip: false
       composer-bin:
-        path: bin/composer
+        path: bin/
+        include: 
+          - composer
         preprocess:
           remove-shell:
             find: "{^#!/usr/bin/env php\s*}"
