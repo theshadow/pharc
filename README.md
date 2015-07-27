@@ -21,6 +21,54 @@ taking a file which specifies how to combine the files and then producing the re
 +---------------------+
 </pre>
 
+## Example pharc.yml
+
+````yaml
+targets:
+  default:
+    phar: composer.phar     # resulting output file
+    bin: bin/composer       # Where the entry point is located
+    license: LICENSE        # The license file to include
+    signature-method: SHA1  # Signing not yet implemented.
+    dependencies: composer  # Specify that dependencies are managed by composer
+    composer:               
+      config: composer.json # this whole section defines how dependencies should be included/excluded
+      paths: vendor/
+      include-dev: false
+      exclude:
+        - Tests
+        - test
+        - docs
+      names:
+        - "*.php"
+        - LICENSE
+    files:                              # file groups define paths and files to include the the phar
+      project:                          # unique name to identify the file group
+        paths: src/                     # paths to include can be single entry or multiple 
+        ignore-vcs: true                # defaults to true, .git, .cvs, etc.. will be ignored
+        strip: true                     # defaults to true, states the files should be stripped of whitespace
+        names:                          # name matches
+          - "*.php"
+        excluded-names:                 # optional, min items: 1
+          - Compiler.php
+          - Classloader.php
+      class-loader:
+        paths: 
+          - src/Composer/Autoload/
+        names: 
+          - Classloader.php
+      hidden-input-exe:
+        paths: vendor/seld/cli-prompt/res/
+        names: 
+          - hiddeninput.exe
+        strip: false
+      resources:
+        paths: res/
+        names: 
+          - "*.json"
+        strip: false
+````
+
 ### Project Files
 
 Project files encompass all the files that contain the business logic for your application. Such as your models, views,
