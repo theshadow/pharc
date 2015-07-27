@@ -9,11 +9,14 @@
 
 namespace Pharc\Project\Target;
 
+use LogicException;
+
 use Pharc\Project\Target;
 use Pharc\Project\Target\Stub\DefaultStub;
 use Pharc\Project\Target\FileGroup\FileGroupHydrator;
 use Pharc\Project\Target\Composer;
 use Pharc\Project\Target\Composer\ComposerHydrator;
+use Pharc\Project\Target\Dependency\DependencyManagerFactory;
 
 /**
  * Class ProjectHydrator
@@ -37,6 +40,11 @@ class TargetHydrator
     protected $fileGroupHydrator;
 
     /**
+     * @var DependencyManagerFactory
+     */
+    protected $dependencyManagerFactory;
+
+    /**
      * @param Target $target
      * @return array
      */
@@ -47,7 +55,7 @@ class TargetHydrator
             'stub' => $target->getStub(),
             'license' => $target->getLicense(),
             'signature-method' => $target->getSignatureMethod(),
-            'composer' => $target->getComposer(),
+            //'composer' => $target->getComposer(),
             'files' => $target->getFileGroups(),
         ];
 
@@ -67,21 +75,36 @@ class TargetHydrator
             ->setSignatureMethod($data['signature-method']);
 
         // if no default stub is defined then we need a default one
+        $stub = new DefaultStub();
+        $stub->setBin($target->getBin())
+            ->setPhar($target->getPhar());
+
         if (isset($data['stub'])) {
             $stub = $this->getStubFactory()->create($data['stub']);
-
-        } else {
-            $stub = new DefaultStub();
-            $stub->setBin($target->getBin())
-                ->setPhar($target->getPhar());
         }
 
         $target->setStub($stub);
 
+        $dependencyType = null;
+        if (isset($data['dependencies'])) {
+            $dependencyType = $data['dependencies'];
+        }
 
-        $composer = $this->getComposerHydrator()->hydrate(new Composer(), $data['composer']);
+        $dependencyConfig = null;
+        if (isset($data[$dependencyType])) {
+            $dependencyConfig = $data[$dependencyType];
+        }
 
-        $target->setComposer($composer);
+        if (count($dependencyConfig) == 0) {
+            throw new LogicException(
+                sprintf("Dependency manager '%s' was defined but no configuration section found.", $dependencyType)
+            );
+        }
+
+        $dependencyManager = $this->getDependencyManagerFactory()
+            ->create($dependencyType, $dependencyConfig);
+
+        $target->setDependencyManager($dependencyManager);
 
         foreach ($data['files'] as $name => $fileGroup) {
             $fileGroup['name'] = $name;
@@ -124,5 +147,26 @@ class TargetHydrator
             $this->fileGroupHydrator = new FileGroupHydrator();
         }
         return $this->fileGroupHydrator;
+    }
+
+    /**
+     * @return DependencyManagerFactory
+     */
+    public function getDependencyManagerFactory()
+    {
+        if (is_null($this->dependencyManagerFactory)) {
+            $this->dependencyManagerFactory = new DependencyManagerFactory();
+        }
+        return $this->dependencyManagerFactory;
+    }
+
+    /**
+     * @param DependencyManagerFactory $managerFactory
+     * @return static
+     */
+    public function setDependencyManagerFactory(DependencyManagerFactory $managerFactory)
+    {
+        $this->dependencyManagerFactory = $managerFactory;
+        return $this;
     }
 }

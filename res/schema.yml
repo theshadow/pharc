@@ -137,7 +137,12 @@ partials:
         _description: "Full path to the license file to include in the phar."
         _required: true
         _not_empty: true
+      dependencies:
+        _type: enum
+        _values:
+          - composer
       composer:
+        _required: false
         _type: array
         _description: "Many projects utilize composer as a dependency manager. This section defines how to include your dependencies in the resulting phar."
         _children:

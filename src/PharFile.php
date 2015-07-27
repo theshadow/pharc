@@ -1,8 +1,6 @@
 <?php
 /**
- * Short description
- * 
- * Long Description
+ * PharFile is a wrapper around the PHP Phar archive.
  * 
  * @license   http://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
  */

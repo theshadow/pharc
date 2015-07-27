@@ -11,6 +11,7 @@ namespace Pharc\Project;
 use Pharc\Project\Target\Composer;
 use Pharc\Project\Target\FileGroup;
 use Pharc\Project\Target\StubInterface;
+use Pharc\Project\Target\Dependency\DependencyManagerInterface;
 
 /**
  * Class Target
@@ -24,33 +25,40 @@ class Target
     public static $SIGNATURE_METHODS = [
         'SHA1' => \Phar::SHA1,
         'SHA256' => \Phar::SHA256,
-        'SHA512' => \Phar::SHA512
+        'SHA512' => \Phar::SHA512,
+        'NONE'   => null,
     ];
 
     /**
      * @var string
      */
     protected $phar;
+
     /**
      * @var StubInterface
      */
     protected $stub;
+
     /**
      * @var string
      */
     protected $license;
+
     /**
      * @var string
      */
     protected $signatureMethod;
+
     /**
-     * @var string
+     * @var array
      */
-    protected $composer;
+    protected $dependencyManager;
+
     /**
      * @var mixed
      */
     protected $files;
+
     /**
      * @var string
      */
@@ -129,20 +137,20 @@ class Target
     }
 
     /**
-     * @return Composer
+     * @return DependencyManagerInterface
      */
-    public function getComposer()
+    public function getDependencyManager()
     {
-        return $this->composer;
+        return $this->dependencyManager;
     }
 
     /**
-     * @param Composer $composer
+     * @param DependencyManagerInterface $dependencyManager
      * @return static
      */
-    public function setComposer(Composer $composer)
+    public function setDependencyManager(DependencyManagerInterface $dependencyManager)
     {
-        $this->composer = $composer;
+        $this->dependencyManager = $dependencyManager;
         return $this;
     }
 

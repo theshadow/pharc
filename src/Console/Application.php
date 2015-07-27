@@ -65,7 +65,7 @@ class Application extends SymfonyConsoleApplication
      */
     public function registerErrorHandler()
     {
-        set_error_handler(array(self::class, 'handleError'));
+        set_error_handler(array(static::class, 'handleError'));
     }
 
     /**
@@ -86,8 +86,8 @@ class Application extends SymfonyConsoleApplication
             return;
         }
         if (ini_get('xdebug.scream')) {
-            $message .= "\n\nWarning: You have xdebug.scream enabled, the warning above may be" .
-                "\na legitimately suppressed error that you were not supposed to see.";
+            $message .= str_pad('', 2, PHP_EOL) . "Warning: You have xdebug.scream enabled, the warning above may be" .
+                PHP_EOL . "a legitimately suppressed error that you were not supposed to see.";
         }
         throw new \ErrorException($message, 0, $level, $file, $line);
     }

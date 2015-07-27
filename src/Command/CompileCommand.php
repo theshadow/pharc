@@ -9,8 +9,10 @@
 
 namespace Pharc\Command;
 
-use Pharc\Project\FileGroup\PreProcessor\RegexPreProcessor;
-use Pharc\Project\Target;
+use Exception;
+use LogicException;
+use InvalidArgumentException;
+
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -24,6 +26,10 @@ use Pharc\Project\BuildFileLoader;
 use Pharc\Project\BuildFileParser;
 use Pharc\PharFile;
 use Pharc\Project\Target\Composer\ConfigFileLoader;
+use Pharc\Project\FileGroup\PreProcessor\RegexPreProcessor;
+use Pharc\Project\Target;
+
+use Seld\PharUtils\Timestamps;
 
 class CompileCommand extends Command
 {
@@ -81,23 +87,22 @@ class CompileCommand extends Command
 
         try {
             $buildFileData = $this->getBuildFileLoader()->load($buildFile);
-        } catch (\InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             $outputInterface->writeln('<error>Invalid file path "' . $buildFile . '".</error>');
             return;
-        } catch (\LogicException $e) {
+        } catch (LogicException $e) {
             $outputInterface->writeln('<error>Unable to read file "' . $buildFile . '".</error>');
             return;
         }
 
         try {
             $this->getMetaYaml()->validate($buildFileData);
-        } catch(\Exception $e) {
+        } catch(Exception $e) {
             $outputInterface->writeln('<error>Unable to validate pharc.yml schema: ' . $e->getMessage() . '</error>');
             return;
         }
 
         $buildFileParser = new BuildFileParser();
-
         $project = $buildFileParser->parse($buildFileData);
 
         if (!$project->hasTarget($target)) {
@@ -108,7 +113,7 @@ class CompileCommand extends Command
 
         $signatureMethod = Target::$SIGNATURE_METHODS[$target->getSignatureMethod()];
 
-        $pharFile = new PharFile($target->getPhar(), getcwd(), $signatureMethod);
+        $pharFile = new PharFile($target->getPhar(), $cwd, $signatureMethod);
         $pharFile->startBuffering();
 
         // add file group
@@ -116,35 +121,12 @@ class CompileCommand extends Command
             $pharFile->addFileGroup($fileGroup);
         }
 
-        // TODO: ALL OF THIS SHOULD BE OPTIONAL!!!
-        // pull out composer configuration.
-        $composer = $target->getComposer();
+        $dependencyManager = $target->getDependencyManager();
 
-        $composerConfig = $this->getComposerConfigFileLoader()->load($composer->getConfig());
-
-        $vendorPath = 'vendor/';
-        if (isset($composerConfig['config']['vendor-dir'])) {
-            $vendorPath = $composerConfig['config']['vendor-dir'];
+        // should I use the null object pattern here?
+        if (!is_null($dependencyManager)) {
+            $pharFile->addFileGroup($dependencyManager->build());
         }
-
-        $dependencyPaths = $composerConfig['require'];
-
-        if ($composer->isIncludeDev()) {
-            $dependencyPaths = array_merge($dependencyPaths, $composerConfig['require-dev']);
-        }
-
-        $dependencyPaths = array_reduce(array_keys($dependencyPaths), function ($carry, $path) use ($vendorPath) {
-            if ($path === 'php') return $carry;
-            $carry[] = $vendorPath . $path . '/';
-            return $carry;
-        }, []);
-
-        // always add the composer autoload files.
-       $dependencyPaths[] = $vendorPath . 'composer/';
-
-        $composer->setPaths($dependencyPaths);
-
-        $pharFile->addFileGroup($composer);
 
         // add the bin file.
         $binPreProcessor = new RegexPreProcessor();
@@ -171,12 +153,7 @@ class CompileCommand extends Command
 
         unset($pharFile);
 
-        /* TODO IMPLEMENT SIGNING
-        // re-sign the phar with reproducible timestamp / signature
-        $util = new Timestamps($target->getPhar());
-        $util->updateTimestamps($versionDate);
-        $util->save($target->getPhar(), $signatureMethod);
-        */
+        //todo: implement signing
     }
 
     /**

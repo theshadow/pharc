@@ -9,6 +9,10 @@
 
 namespace Pharc\Project;
 
+use InvalidArgumentException;
+use LogicException;
+use RuntimeException;
+
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -24,14 +28,14 @@ class BuildFileLoader
     public function load($file)
     {
         if (empty($file) || !is_string($file)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 '$file must be a valid string.'
             );
         }
 
         if (!is_readable($file))
         {
-            throw new \LogicException(
+            throw new LogicException(
                 $file . ' is not readable or does not exist.'
             );
         }
@@ -39,7 +43,7 @@ class BuildFileLoader
         try {
             $data = Yaml::parse(file_get_contents($file));
         } catch(\Exception $e) {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 'Unable to parse the contents of ' . $file,
                 0,
                 $e
