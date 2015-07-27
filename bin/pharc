@@ -1,8 +1,8 @@
-#!/usr/bin/env php
+#!/usr/bin/env php --define phar.readonly=0
 <?php
 
 if (PHP_SAPI !== 'cli') {
-    echo 'Warning: Pharc should be invoked via the CLI version of PHP, not the '.PHP_SAPI.' SAPI'.PHP_EOL;
+    echo 'Warning: Pharc should be invoked via the CLI version of PHP, not the ' . PHP_SAPI . ' SAPI' . PHP_EOL;
 }
 
 require __DIR__.'/../src/bootstrap.php';

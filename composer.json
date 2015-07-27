@@ -31,7 +31,8 @@
     "symfony/finder": "^2.2",
     "symfony/process": "^2.1",
     "seld/phar-utils": "^1.0",
-    "seld/cli-prompt": "^1.0"
+    "seld/cli-prompt": "^1.0",
+    "romaricdrigon/metayaml": "^1.0.1"
   },
   "require-dev": {
     "phing/phing": "^2.11.0",

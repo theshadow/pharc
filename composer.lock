@@ -4,8 +4,50 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e8970c7f3303b8156d4f201d2909b6e0",
+    "hash": "cd23404b7c61723d4a50363866e8d8de",
     "packages": [
+        {
+            "name": "romaricdrigon/metayaml",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/romaricdrigon/MetaYaml.git",
+                "reference": "ebe10d1e3f334382cf65e9840df4de9c1393b261"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/romaricdrigon/MetaYaml/zipball/ebe10d1e3f334382cf65e9840df4de9c1393b261",
+                "reference": "ebe10d1e3f334382cf65e9840df4de9c1393b261",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "symfony/yaml": "~2.3"
+            },
+            "require-dev": {
+                "atoum/atoum": "dev-master#c6ec75d4cf132728e80ec8ed1470b83cb53fc1c9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "RomaricDrigon\\MetaYaml": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Using [Yaml|Xml|json] schemas files to validate [Yaml|Xml|json] ",
+            "homepage": "http://github.com/romaricdrigon/MetaYaml",
+            "keywords": [
+                "json",
+                "schema",
+                "validation",
+                "xml",
+                "yaml"
+            ],
+            "time": "2014-11-26 22:00:23"
+        },
         {
             "name": "seld/cli-prompt",
             "version": "dev-master",
@@ -252,6 +294,55 @@
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
             "time": "2015-05-15 14:11:12"
+        },
+        {
+            "name": "symfony/yaml",
+            "version": "2.8.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/Yaml.git",
+                "reference": "2396832f6f9ab2b8f62f00b5d3f2e722fc773d65"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/2396832f6f9ab2b8f62f00b5d3f2e722fc773d65",
+                "reference": "2396832f6f9ab2b8f62f00b5d3f2e722fc773d65",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "require-dev": {
+                "symfony/phpunit-bridge": "~2.7|~3.0.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Yaml\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Yaml Component",
+            "homepage": "https://symfony.com",
+            "time": "2015-05-12 15:16:46"
         }
     ],
     "packages-dev": [
@@ -315,12 +406,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phingofficial/phing.git",
-                "reference": "a185fef6df7241e540466b67486a4c4b552260e1"
+                "reference": "df7c6d22805b6ea1274657ff8d6be85e81f29661"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phingofficial/phing/zipball/a185fef6df7241e540466b67486a4c4b552260e1",
-                "reference": "a185fef6df7241e540466b67486a4c4b552260e1",
+                "url": "https://api.github.com/repos/phingofficial/phing/zipball/df7c6d22805b6ea1274657ff8d6be85e81f29661",
+                "reference": "df7c6d22805b6ea1274657ff8d6be85e81f29661",
                 "shasum": ""
             },
             "require": {
@@ -397,7 +488,7 @@
                 "task",
                 "tool"
             ],
-            "time": "2015-05-20 13:04:38"
+            "time": "2015-05-29 08:04:16"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -760,12 +851,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "49c2007b90b8a619e2057785e8fbc331b7b760ff"
+                "reference": "a2c4c437c1519925014f0bb71a264c884fea13c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/49c2007b90b8a619e2057785e8fbc331b7b760ff",
-                "reference": "49c2007b90b8a619e2057785e8fbc331b7b760ff",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a2c4c437c1519925014f0bb71a264c884fea13c5",
+                "reference": "a2c4c437c1519925014f0bb71a264c884fea13c5",
                 "shasum": ""
             },
             "require": {
@@ -824,7 +915,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-05-25 03:53:30"
+            "time": "2015-05-28 13:16:49"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -832,12 +923,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "74ffb87f527f24616f72460e54b595f508dccb5c"
+                "reference": "253c005852591fd547fc18cd5b7b43a1ec82d8f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/74ffb87f527f24616f72460e54b595f508dccb5c",
-                "reference": "74ffb87f527f24616f72460e54b595f508dccb5c",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/253c005852591fd547fc18cd5b7b43a1ec82d8f7",
+                "reference": "253c005852591fd547fc18cd5b7b43a1ec82d8f7",
                 "shasum": ""
             },
             "require": {
@@ -879,7 +970,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2015-04-02 05:36:41"
+            "time": "2015-05-29 05:19:18"
         },
         {
             "name": "sebastian/comparator",
@@ -1251,55 +1342,6 @@
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
             "time": "2015-02-24 06:35:25"
-        },
-        {
-            "name": "symfony/yaml",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/Yaml.git",
-                "reference": "28a6a5c1ac255efbc167d273530c66dcea94e13f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/28a6a5c1ac255efbc167d273530c66dcea94e13f",
-                "reference": "28a6a5c1ac255efbc167d273530c66dcea94e13f",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5.9"
-            },
-            "require-dev": {
-                "symfony/phpunit-bridge": "~2.8|~3.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Yaml\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony Yaml Component",
-            "homepage": "https://symfony.com",
-            "time": "2015-05-12 15:48:43"
         }
     ],
     "aliases": [],

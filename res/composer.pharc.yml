@@ -1,0 +1,37 @@
+targets:
+  default:
+    phar: composer.phar
+    bin: bin/composer
+    license: LICENSE
+    signature-method: SHA1
+    composer:
+      config: composer.json
+      paths: vendor/
+      include-dev: false
+      exclude:
+        - Tests
+        - test
+        - docs
+      names:
+        - "*.php"
+        - LICENSE
+    files:
+      project:
+        paths: src/ 
+        ignore-vcs: true # default true
+        strip: true # default true
+        names:
+          - "*.php"
+        excluded-names: # optional, min items: 1
+          - Compiler.php
+          - Classloader.php
+      class-loader:
+        paths: 
+          - src/Composer/Autoload/
+        names: 
+          - Classloader.php
+      hidden-input-exe:
+        paths: vendor/seld/cli-prompt/res/
+        names: 
+          - hiddeninput.exe
+        strip: false

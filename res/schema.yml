@@ -35,24 +35,43 @@ partials:
   file-set:
     _type: array
     _children:
-      path: 
-        _type: text
-        _description: "Defines a directory or path to include in the resulting phar file."
+      paths:
+        _type: choice
         _required: true
-        _not_empty: true
-      name:
-        _type: text
-        _description: "Specifies a file matching pattern using asterisks as wild cards. e.g. *.php"
-        _not_empty: true
+        _description: "Defines a collection of one or more directories to include search for files matching the name attribute."
+        _choices: 
+          1:
+            _type: text
+            _not_empty: true
+          2:        
+            _type: prototype
+            _min_items: 1
+            _prototype:
+              _type: text
+              _not_empty: true        
       ignore-vcs:
         _type: boolean
         _description: "Defaults to true. When true this specifies that VCS files and directories should be ignored."
       strip:
         _type: boolean
         _description: "Defaults to true. When true this specifies that the file contents will be stripped of whitespace before being added to the file."
+      names:
+        _type: prototype
+        _description: "A collection of files to be included. Should be just the basename of the file. Wildcards are allowed. Must have at least one item when defined."
+        _min_items: 1
+        _prototype:
+          _type: text
+          _not_empty: true
+      excluded-names:
+        _type: prototype
+        _description: "A list of file names, with possible wildcards, of files to exclude from the phar."
+        _prototype:
+          _type: text
+          _not_empty: true
+        _min_items: 1           
       exclude:
         _type: prototype
-        _description: "A collection of files to be ignored. Should be just the basename of the file. Must have at least one item when defined."
+        _description: "A collection of directories to be ignored. Must have at least one item when defined."
         _min_items: 1
         _prototype:
           _type: text
@@ -75,6 +94,16 @@ partials:
         _description: "The path and name of the resulting phar file."
         _required: true
         _not_empty: true
+      bin:
+        _type: text
+        _description: "Path to the entry point of the command. This is the script you would run if it wasn't a phar."
+        _required: true
+        _not_empty: true
+      signature-method:
+        _type: text
+        _description: "The method to sign the resulting phar file with. The allowed options are SHA1, SHA256, and SHA512"
+        _required: true
+        _not_empty: true
       stub:
         _type: choice
         _description: "The stub is the entry point for your phar file. It's sort of like the 'main' function. Based on the type it will try to pull in the stub from either a specified string, the output of a shell command, or a file." 
@@ -85,6 +114,9 @@ partials:
               command: 
                 _type: text
                 _required: true
+                _not_empty: true
+              working-dir:
+                _type: text
                 _not_empty: true
           2:
             _type: array
@@ -105,7 +137,12 @@ partials:
         _description: "Full path to the license file to include in the phar."
         _required: true
         _not_empty: true
+      dependencies:
+        _type: enum
+        _values:
+          - composer
       composer:
+        _required: false
         _type: array
         _description: "Many projects utilize composer as a dependency manager. This section defines how to include your dependencies in the resulting phar."
         _children:
@@ -117,10 +154,20 @@ partials:
           include-dev:
             _type: boolean
             _description: "Defaults to false. When true dependencies defined in require-dev will also be added to the resulting phar file."
-          path:
-            _type: text
+          paths:
+            _type: choice
+            _required: true
             _description: "Defaults to 'vendor/'. The path may be defined if you wish to use a different vendor path than one defined in your composer.json in the config.vendor-dir"
-            _not_empty: true
+            _choices: 
+              1:
+                _type: text
+                _not_empty: true
+              2:        
+                _type: prototype
+                _min_items: 1
+                _prototype:
+                  _type: text
+                  _not_empty: true
           exclude:
             _type: prototype
             _description: "A list of paths to exclude from inclusion."
@@ -128,13 +175,21 @@ partials:
               _type: text
               _not_empty: true
             _min_items: 1
-          include:
+          names:
             _type: prototype
             _description: "A list of paths to include from inclusion."
+            _required: true
             _prototype:
               _type: text
               _not_empty: true
-            _min_items: 1            
+            _min_items: 1 
+          excluded-names:
+            _type: prototype
+            _description: "A list of file names, with possible wildcards, of files to exclude from the phar."
+            _prototype:
+              _type: text
+              _not_empty: true
+            _min_items: 1           
       files:
         _type: prototype
         _description: "A collection of file set descriptors which define what file(s) to include in the resulting phar file."

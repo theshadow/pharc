@@ -1,0 +1,15 @@
+      composer-autoload:
+        path: vendor/autoload.php
+      autoload-namespaces:
+        path: vendor/composer/autoload_namespaces.php
+      autoload-psr4:
+        path: vendor/composer/autoload_psr4.php
+      autoload-classmap:
+        path: vendor/composer/autoload_classmap.php
+      autoload-real:
+        path: vendor/composer/autoload_real.php
+      composer-include-paths:
+        path: vendor/composer/include_paths.php
+        only-if-exists: true # optional defaults to false. Will raise an error if this is false and the file doesn't exist.
+      composer-classloader:
+        path: vendor/composer/ClassLoader.php
